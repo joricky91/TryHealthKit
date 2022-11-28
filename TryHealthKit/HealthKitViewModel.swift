@@ -13,7 +13,7 @@ class HealthKitViewModel: ObservableObject {
     var healthStore = HKHealthStore()
     var healthKitManager = HealthKitManager()
     @Published var userStepCount = ""
-    var isAuthorized = false
+    @Published var isAuthorized = false
     
     init() {
         changeAuthorizationStatus()
@@ -37,7 +37,9 @@ class HealthKitViewModel: ObservableObject {
         case .sharingDenied:
             isAuthorized = false
         case .sharingAuthorized:
-            isAuthorized = true
+            DispatchQueue.main.async {
+                self.isAuthorized = true
+            }
         @unknown default:
             isAuthorized = false
         }
@@ -46,12 +48,8 @@ class HealthKitViewModel: ObservableObject {
     //MARK: - Read User's Step Count
     func readStepsTakenToday() {
         healthKitManager.readStepCount(forToday: Date(), healthStore: healthStore) { step in
-            if step == 0.0 {
-                return
-            } else {
-                DispatchQueue.main.async {
-                    return self.userStepCount = String(format: "%.0f", step)
-                }
+            if step != 0.0 {
+                self.userStepCount = String(format: "%.0f", step)
             }
         }
     }

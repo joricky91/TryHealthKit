@@ -11,16 +11,12 @@ import HealthKit
 class HealthKitManager {
     
     func setUpHealthRequest(healthStore: HKHealthStore, readSteps: @escaping () -> Void) {
-        if HKHealthStore.isHealthDataAvailable() {
-            if let stepCount = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) {
-                healthStore.requestAuthorization(toShare: [stepCount], read: [stepCount]) { success, error in
-                    if success {
-                        readSteps()
-                    } else {
-                        if error != nil {
-                            print(error ?? "Error")
-                        }
-                    }
+        if HKHealthStore.isHealthDataAvailable(), let stepCount = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.stepCount) {
+            healthStore.requestAuthorization(toShare: [stepCount], read: [stepCount]) { success, error in
+                if success {
+                    readSteps()
+                } else if error != nil {
+                    print(error ?? "Error")
                 }
             }
         }
