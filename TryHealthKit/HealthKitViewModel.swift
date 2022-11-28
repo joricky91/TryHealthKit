@@ -10,8 +10,8 @@ import HealthKit
 
 class HealthKitViewModel: ObservableObject {
     
-    var healthStore = HKHealthStore()
-    var healthKitManager = HealthKitManager()
+    private var healthStore = HKHealthStore()
+    private var healthKitManager = HealthKitManager()
     @Published var userStepCount = ""
     @Published var isAuthorized = false
     
