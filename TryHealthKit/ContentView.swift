@@ -42,9 +42,7 @@ struct ContentView: View {
         }
         .padding()
         .onAppear {
-            if vm.isAuthorized {
-                vm.readStepsTakenToday()
-            }
+            vm.readStepsTakenToday()
         }
     }
 }

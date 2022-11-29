@@ -49,7 +49,9 @@ class HealthKitViewModel: ObservableObject {
     func readStepsTakenToday() {
         healthKitManager.readStepCount(forToday: Date(), healthStore: healthStore) { step in
             if step != 0.0 {
-                self.userStepCount = String(format: "%.0f", step)
+                DispatchQueue.main.async {
+                    self.userStepCount = String(format: "%.0f", step)
+                }
             }
         }
     }
